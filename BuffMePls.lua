@@ -52,8 +52,19 @@ function getRaidGroupNum()
 
     return nil
 end
+function allBuffsTargetCouldCast(targetUnitClassId)
+    local buffs = {}
+    local spellIDs = {}
+    for partyBuffspellID, unitBuffspellID in pairs(BUFFS_[targetUnitClassId]) do
+        buffs[#buffs + 1] = GetSpellLink(unitBuffspellID);
+        spellIDs[#spellIDs + 1] = unitBuffspellID;
+    end
+    if #buffs > 0 then return true, table.concat(buffs, ", "), spellIDs end
 
-function buffsPlayerNeed(targetUnitClassId)
+    return false, '', spellIDs
+end
+
+function getBuffsPlayerNeed(targetUnitClassId)
     local buffs = {}
     local spellIDs = {}
     for partyBuffspellID, unitBuffspellID in pairs(BUFFS_[targetUnitClassId]) do
@@ -145,7 +156,7 @@ function BuffMePls_Frame_Mouse_Event(self, button)
     local targetUnitClassId = select(3, UnitClass('target'))
     local targetName = UnitName('target')
 
-    local isNeed, buffs = buffsPlayerNeed(targetUnitClassId)
+    local isNeed, buffs = allBuffsTargetCouldCast(targetUnitClassId)
     if isNeed and targetName then sendMessage(buffs, targetName) end
 end
 
@@ -179,9 +190,10 @@ createBuffButtons()
 
 function Player_Target_Changed_Event(self, event, ...)
     local targetUnitClassId = select(3, UnitClass('target'))
-    if UnitIsPlayer('target') and UnitIsFriend('target') and BUFFS_[targetUnitClassId] then
+    if UnitIsPlayer('target') and UnitIsFriend("player", "target") and
+        BUFFS_[targetUnitClassId] then
         hideAllBuffButtons()
-        local _, _, spellIDs = buffsPlayerNeed(targetUnitClassId)
+        local _, _, spellIDs = getBuffsPlayerNeed(targetUnitClassId)
         showBuffButtons(spellIDs)
         BuffMePls_Button:Show()
     else
