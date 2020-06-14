@@ -179,7 +179,7 @@ createBuffButtons()
 
 function Player_Target_Changed_Event(self, event, ...)
     local targetUnitClassId = select(3, UnitClass('target'))
-    if UnitIsPlayer('target') and BUFFS_[targetUnitClassId] then
+    if UnitIsPlayer('target') and UnitIsFriend('target') and BUFFS_[targetUnitClassId] then
         hideAllBuffButtons()
         local _, _, spellIDs = buffsPlayerNeed(targetUnitClassId)
         showBuffButtons(spellIDs)
