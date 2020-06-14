@@ -1,0 +1,9 @@
+## Interface: 11302
+## Title: BuffMePls
+## Version: 1.0
+## Notes: Ask the target player for the buffs.
+## DefaultState: enabled
+## Author: ou.yun
+Locale\core.lua
+Locale\zhTW.lua
+BuffMePls.lua
