@@ -14,7 +14,7 @@ UNIT_CLASS_MAGE = 8
 UNIT_CLASS_DRUID = 11
 
 -- [unitClassId] = {
---     [partyBuffSpellId] = 'unitBuffSpellId'
+--     [partyBuffspellID] = 'unitBuffspellID'
 -- }
 local BUFFS_ = {
     [UNIT_CLASS_PALAIN] = {
@@ -55,17 +55,17 @@ end
 
 function buffsPlayerNeed(targetUnitClassId)
     local buffs = {}
-    local spellIds = {}
-    for partyBuffSpellId, unitBuffSpellId in pairs(BUFFS_[targetUnitClassId]) do
-        if not isPlayerNeedsBuff(GetSpellLink(partyBuffSpellId)) and
-            not isPlayerNeedsBuff(GetSpellLink(unitBuffSpellId)) then
-            buffs[#buffs + 1] = GetSpellLink(unitBuffSpellId);
-            spellIds[#spellIds + 1] = unitBuffSpellId;
+    local spellIDs = {}
+    for partyBuffspellID, unitBuffspellID in pairs(BUFFS_[targetUnitClassId]) do
+        if not isPlayerNeedsBuff(GetSpellLink(partyBuffspellID)) and
+            not isPlayerNeedsBuff(GetSpellLink(unitBuffspellID)) then
+            buffs[#buffs + 1] = GetSpellLink(unitBuffspellID);
+            spellIDs[#spellIDs + 1] = unitBuffspellID;
         end
     end
-    if #buffs > 0 then return true, table.concat(buffs, ", "), spellIds end
+    if #buffs > 0 then return true, table.concat(buffs, ", "), spellIDs end
 
-    return false, '', spellIds
+    return false, '', spellIDs
 end
 
 function isPlayerNeedsBuff(partySpellName)
@@ -98,8 +98,8 @@ function hideAllBuffButtons()
     for key, btn in pairs(BUFF_BUTTONS) do btn:Hide() end
 end
 
-function showBuffButtons(spellIds)
-    for i, id in ipairs(spellIds) do
+function showBuffButtons(spellIDs)
+    for i, id in ipairs(spellIDs) do
         local btn = BUFF_BUTTONS[id]
         btn:Show()
         btn:SetPoint('RIGHT', BTN_WIDTH * i, 0)
@@ -109,18 +109,18 @@ end
 BUFF_BUTTONS = {}
 function createBuffButtons()
     local i = 1;
-    for spellId, name in pairs(SHORT_BUFF_NAME) do
+    for spellID, name in pairs(SHORT_BUFF_NAME) do
         local btn = CreateFrame("Button", nil, BuffMePls_Button,
                                 "UIPanelButtonTemplate")
         btn:SetSize(BTN_WIDTH, BTN_HEIGHT) -- width, height
         -- btn:SetText(name)
         btn:SetPoint('RIGHT', BTN_WIDTH * i, 0)
 
-        local texture = GetSpellTexture(spellId)
+        local texture = GetSpellTexture(spellID)
         btn:SetNormalTexture(texture)
 
         btn:SetScript("OnClick", function()
-            local buffs = GetSpellLink(spellId)
+            local buffs = GetSpellLink(spellID)
             local targetName = UnitName('target')
             sendMessage(buffs, targetName)
         end)
@@ -129,7 +129,7 @@ function createBuffButtons()
             GameTooltip:ClearLines()
             GameTooltip:AddLine("BuffMePls")
             GameTooltip:AddLine(string.format(L['ask_for_unit_buff'],
-                                              GetSpellLink(spellId)))
+                                              GetSpellLink(spellID)))
             GameTooltip:Show()
         end)
         btn:SetScript("OnLeave", function(self, motion)
@@ -137,7 +137,7 @@ function createBuffButtons()
         end)
 
         i = i + 1
-        BUFF_BUTTONS[spellId] = btn
+        BUFF_BUTTONS[spellID] = btn
     end
 end
 
@@ -160,7 +160,7 @@ BuffMePls_Button:Hide()
 
 BuffMePls_Button:SetMovable(true)
 BuffMePls_Button:EnableMouse(true)
-BuffMePls_Button:RegisterForDrag("LeftButton")
+BuffMePls_Button:RegisterForDrag("RightButton")
 BuffMePls_Button:SetScript("OnDragStart", BuffMePls_Button.StartMoving)
 BuffMePls_Button:SetScript("OnDragStop", BuffMePls_Button.StopMovingOrSizing)
 
@@ -181,8 +181,8 @@ function Player_Target_Changed_Event(self, event, ...)
     local targetUnitClassId = select(3, UnitClass('target'))
     if UnitIsPlayer('target') and BUFFS_[targetUnitClassId] then
         hideAllBuffButtons()
-        local _, _, spellIds = buffsPlayerNeed(targetUnitClassId)
-        showBuffButtons(spellIds)
+        local _, _, spellIDs = buffsPlayerNeed(targetUnitClassId)
+        showBuffButtons(spellIDs)
         BuffMePls_Button:Show()
     else
         BuffMePls_Button:Hide()
