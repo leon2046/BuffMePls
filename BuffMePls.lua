@@ -25,9 +25,17 @@ local BUFFS_ = {
         ['25890'] = '19979'
     },
 
-    [UNIT_CLASS_PRIEST] = {['27681'] = '27841', ['21564'] = '10938'},
-    [UNIT_CLASS_MAGE] = {['23028'] = '10157'},
-    [UNIT_CLASS_DRUID] = {['21850'] = '9885'}
+    [UNIT_CLASS_PRIEST] = {
+        ['27681'] = '27841',
+        ['21564'] = '10938',
+        ['10958'] = '10958'
+    },
+    [UNIT_CLASS_MAGE] = {
+        ['23028'] = '10157',
+        ['10173'] = '10173',
+        ['10170'] = '10170'
+    },
+    [UNIT_CLASS_DRUID] = {['21850'] = '9885', ['467'] = '467'}
 }
 local SHORT_BUFF_NAME = {
     ['27841'] = L['divine-spirit'],
@@ -38,7 +46,11 @@ local SHORT_BUFF_NAME = {
     ['20217'] = L['blessing-of-kings'],
     ['25290'] = L['blessing-of-wisdom'],
     ['1038'] = L['blessing-of-salvation'],
-    ['19979'] = L['blessing-of-light']
+    ['19979'] = L['blessing-of-light'],
+    ['10958'] = L['blessing-of-light'],
+    ['467'] = L['blessing-of-light'],
+    ['10173'] = L['blessing-of-light'],
+    ['10170'] = L['blessing-of-light'],
 }
 
 function getRaidGroupNum()
