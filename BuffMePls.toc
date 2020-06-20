@@ -3,7 +3,9 @@
 ## Version: 1.0
 ## Notes: Ask the target player for the buffs.
 ## DefaultState: enabled
-## Author: ou.yun
+## Author: tw/伊弗斯/別跑啊老弟
 Locale\core.lua
 Locale\zhTW.lua
+Locale\zhCN.lua
+Locale\enUS.lua
 BuffMePls.lua

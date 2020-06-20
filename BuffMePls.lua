@@ -50,7 +50,7 @@ local SHORT_BUFF_NAME = {
     ['10958'] = L['blessing-of-light'],
     ['467'] = L['blessing-of-light'],
     ['10173'] = L['blessing-of-light'],
-    ['10170'] = L['blessing-of-light'],
+    ['10170'] = L['blessing-of-light']
 }
 
 function getRaidGroupNum()
@@ -202,8 +202,9 @@ createBuffButtons()
 
 function Player_Target_Changed_Event(self, event, ...)
     local targetUnitClassId = select(3, UnitClass('target'))
-    if UnitIsPlayer('target') and UnitIsFriend("player", "target") and
-        BUFFS_[targetUnitClassId] then
+    local playerUnitClassId = select(3, UnitClass('player'))
+    if targetUnitClassId ~= playerUnitClassId and UnitIsPlayer('target') and
+        UnitIsFriend("player", "target") and BUFFS_[targetUnitClassId] then
         hideAllBuffButtons()
         local _, _, spellIDs = getBuffsPlayerNeed(targetUnitClassId)
         showBuffButtons(spellIDs)
